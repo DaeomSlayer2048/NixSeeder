@@ -12,7 +12,7 @@ urls = {}
 #Definitions
 def get_torrents(distros, directory):
     for distro, urls in tqdm(distros.items(), desc="Distros"):
-        for url in tqdm(urls, desc="Files"):
+        for url in tqdm(urls, desc="Files  "):
             filename = directory + url.rsplit('/', 1)[-1]
             exists = os.path.isfile(filename)
             if not exists:
@@ -26,7 +26,6 @@ parser = argparse.ArgumentParser(
     A simple script to pull in torrernt files of our favorite Linux distros.
     ''',
     epilog='''
-    TODO: Add progress bar
     TODO: Take config file
     '''
 )
@@ -49,4 +48,5 @@ urls['Ubuntu'] = distros.get_ubuntu()
 urls['Arch'] = distros.get_arch()
 urls['Fedora'] = distros.get_fedora()
 urls['CentOS'] = distros.get_centos()
+urls['OpenSUSE'] = distros.get_opensuse()
 get_torrents(urls, directory)
