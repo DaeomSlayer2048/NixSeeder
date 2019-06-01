@@ -1,13 +1,23 @@
+import distros
 import argparse
-import urllib.request
 import os
+import urllib.request
 
+#################################################################################################
+#Globals
+urls = {}
+
+#################################################################################################
+#Definitions
 def get_torrents(distros, directory):
-    ## NOTE: Most likely location for adding progress bar
-    for distro in distros:
-        filename = directory + distro["Name"] + "_" + distro["Release"] + "_" + distro["Architecture"] + ".torrent"
-        urllib.request.urlretrieve(distro["Link"], filename)
+    for distro, urls in distros.items():
+        print("Collecting %s files now" % (str(distro)))
+        for url in urls:
+            filename = directory + url.rsplit('/', 1)[-1]
+            urllib.request.urlretrieve(url, filename)
 
+#################################################################################################
+#Arg parse
 parser = argparse.ArgumentParser(
     prog='PROG',
     description='''
@@ -19,29 +29,19 @@ parser = argparse.ArgumentParser(
     '''
 )
 
-parser.add_argument("--All", help="Download all torrernt files for all distrobutions", action="store_true")
 parser.add_argument("--Directory", help="Location to store torrent files", nargs='+')
 args = parser.parse_args()
 
+#################################################################################################
+#Main
 if args.Directory:
     directory = str(args.Directory[0])
     #Handle no ending slash
     if not directory.endswith('/'):
         directory = directory + '/'
 else:
-    directory = './'
+    directory = './Torrents/'
+os.makedirs(directory, exist_ok=True)
 
-#Remove later, Used to prove FTP and HTTP both work
-files = [{
-    "Name":"Ubuntu_Desktop",
-    "Architecture":"x86_64",
-    "Release":"19.04",
-    "Link":"http://releases.ubuntu.com/19.04/ubuntu-19.04-desktop-amd64.iso.torrent"
-    }, {
-    "Name":"Ubuntu_Desktop",
-    "Architecture":"x86_64",
-    "Release":"12.04.5",
-    "Link":"ftp://releases.ubuntu.com/releases/12.04/ubuntu-12.04.5-alternate-amd64.iso.torrent"
-    }]
-
-get_torrents(files, directory)
+urls['Ubuntu'] = distros.get_ubuntu()
+get_torrents(urls, directory)
