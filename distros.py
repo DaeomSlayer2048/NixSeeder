@@ -30,8 +30,6 @@ def get_ubuntu():
     return urls
 
 def get_arch():
-    urls = []
-    version_urls = []
     base_url = "ftp://mirror.rackspace.com/archlinux/iso/"
     torrent_format = re.compile("archlinux-.+\.iso\.torrent")
     version_format = re.compile("[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+")

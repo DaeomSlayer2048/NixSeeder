@@ -14,7 +14,9 @@ def get_torrents(distros, directory):
     for distro, urls in tqdm(distros.items(), desc="Distro"):
         for url in tqdm(urls, desc="Urls"):
             filename = directory + url.rsplit('/', 1)[-1]
-            urllib.request.urlretrieve(url, filename)
+            exists = os.path.isfile(filename)
+            if not exists:
+                urllib.request.urlretrieve(url, filename)
 
 #################################################################################################
 #Arg parse
