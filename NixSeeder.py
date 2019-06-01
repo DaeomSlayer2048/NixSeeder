@@ -1,5 +1,6 @@
 import distros
 import argparse
+from tqdm import tqdm
 import os
 import urllib.request
 
@@ -10,9 +11,8 @@ urls = {}
 #################################################################################################
 #Definitions
 def get_torrents(distros, directory):
-    for distro, urls in distros.items():
-        print("Collecting %s files now" % (str(distro)))
-        for url in urls:
+    for distro, urls in tqdm(distros.items(), desc="Distro"):
+        for url in tqdm(urls, desc="Urls"):
             filename = directory + url.rsplit('/', 1)[-1]
             urllib.request.urlretrieve(url, filename)
 
