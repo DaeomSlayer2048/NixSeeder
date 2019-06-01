@@ -11,8 +11,8 @@ urls = {}
 #################################################################################################
 #Definitions
 def get_torrents(distros, directory):
-    for distro, urls in tqdm(distros.items(), desc="Distro"):
-        for url in tqdm(urls, desc="Urls"):
+    for distro, urls in tqdm(distros.items(), desc="Distros"):
+        for url in tqdm(urls, desc="Files"):
             filename = directory + url.rsplit('/', 1)[-1]
             exists = os.path.isfile(filename)
             if not exists:
@@ -47,4 +47,5 @@ os.makedirs(directory, exist_ok=True)
 
 urls['Ubuntu'] = distros.get_ubuntu()
 urls['Arch'] = distros.get_arch()
+urls['Fedora'] = distros.get_fedora()
 get_torrents(urls, directory)
