@@ -44,4 +44,5 @@ else:
 os.makedirs(directory, exist_ok=True)
 
 urls['Ubuntu'] = distros.get_ubuntu()
+urls['Arch'] = distros.get_arch()
 get_torrents(urls, directory)
