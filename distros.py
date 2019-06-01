@@ -2,7 +2,7 @@ import re
 import urllib.request
 
 def parse_ftp(base_url, torrent_format, version_format):
-    #A generic FTP directory parser
+    #A generic FTP directory parser with torrents stored in folders seperated by version
     urls = []
     version_urls = []
     #Get site
@@ -34,4 +34,17 @@ def get_arch():
     torrent_format = re.compile("archlinux-.+\.iso\.torrent")
     version_format = re.compile("[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+")
     urls = parse_ftp(base_url, torrent_format, version_format)
+    return urls
+
+def get_fedora():
+    urls = []
+    base_url = "https://torrent.fedoraproject.org/torrents/"
+    torrent_format = re.compile("(?:\"\>)(Fedora.+.torrent)")
+    #Main page
+    response = urllib.request.urlopen(base_url).read().decode('utf-8')
+    torrents = torrent_format.findall(response)
+    for torrent in torrents:
+        print("Found: %s" % (torrent))
+        url = base_url + torrent
+        urls.append(url)
     return urls
