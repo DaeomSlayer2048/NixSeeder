@@ -6,10 +6,18 @@ static_directory = '/'
 ###########################################################################################
 # Generic functions
 
+def get_url(url):
+    try:
+        response = urllib.request.urlopen(url).read().decode('utf-8')
+        return response
+    except urllib.error.URLError as e:
+        print("Error retrieveing %s " % (str(url)))
+        print(e.reason)
+
 def get_releases(base_url, release_format, static_directory):
     release_urls = []
     #Get site
-    response = urllib.request.urlopen(base_url).read().decode('utf-8')
+    response = get_url(base_url)
     releases = release_format.findall(response)
     for release in releases:
         release_url = base_url + release + static_directory
@@ -22,7 +30,7 @@ def get_urls(release_urls, torrent_format):
     urls = []
     #Get torrents in release folder
     for release_url in release_urls:
-        response = urllib.request.urlopen(release_url).read().decode('utf-8')
+        response = get_url(release_url)
         torrents = torrent_format.findall(response)
         for torrent in torrents:
             url =  release_url + torrent
@@ -76,7 +84,7 @@ def get_fedora():
     base_url = "https://torrent.fedoraproject.org/torrents/"
     torrent_format = re.compile("(?:\"\>)(Fedora.+\.torrent)")
     #Main page
-    response = urllib.request.urlopen(base_url).read().decode('utf-8')
+    response = get_url(base_url)
     torrents = torrent_format.findall(response)
     for torrent in torrents:
         print("Found: %s" % (torrent))
@@ -90,12 +98,12 @@ def get_centos():
     torrent_format = re.compile("CentOS-.+\.torrent")
     release_format = re.compile("[0-9]\.[0-9]\.[0-9]+|[0-9]\.[0-9]+")
     #Main page
-    response = urllib.request.urlopen(base_url).read().decode('utf-8')
+    response = get_url(base_url)
     releases = release_format.findall(response)
     #Only the latest is stored on this server
     latest = max(releases)
     release_url = base_url + latest + '/isos/x86_64/'
-    response = urllib.request.urlopen(release_url).read().decode('utf-8')
+    response = get_url(release_url)
     torrents = torrent_format.findall(response)
     for torrent in torrents:
         url =  release_url + torrent
@@ -114,7 +122,7 @@ def get_debian():
     static_directory = "/bt-hybrid/"
     #Get Release
     for release_url in release_urls:
-        response = urllib.request.urlopen(release_url).read().decode('utf-8')
+        response = get_url(release_url)
         archs = arch_format.findall(response)
         for arch in archs:
             url = static_directory + arch + static_directory
