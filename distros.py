@@ -28,6 +28,8 @@ def get_urls(release_urls, torrent_format):
             url =  release_url + torrent
             print("Found: %s" % (url.rsplit('/', 1)[-1]))
             urls.append(url)
+        #Remove dupes
+        urls = list(set(urls))
     return urls
 
 ###########################################################################################

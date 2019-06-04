@@ -20,7 +20,7 @@ def get_torrents(distros, directory):
             if not exists:
                 try:
                     urllib.request.urlretrieve(url, filename)
-                except:
+                except urllib.error.URLError as e:
                     print("Error retrieveing %s " % (str(url)))
                     print(e.reason)
 
@@ -89,7 +89,7 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("--Directory", help="Location to store torrent files", nargs='+')
-parser.add_argument("--All", help="Grab all distro files", nargs='+')
+parser.add_argument("--All", help="Grab all distro files", action="store_true")
 args = parser.parse_args()
 
 #################################################################################################
