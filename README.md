@@ -7,6 +7,12 @@ A python script for downloading .torrent files automatically.
 This script is Alpha at best currently, and is fairly intuitive, you can't break much.
 
 ## Desired Distros
+- [x] Ubuntu
+- [x] Arch Linux
+- [x] Fedora
+- [x] CentOS
+- [x] OpenSUSE
+- [x] Parrot
 - [ ] Kali
 - [ ] Debian
 - [ ] Elementary
