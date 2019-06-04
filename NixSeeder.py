@@ -7,7 +7,7 @@ import urllib.request
 #################################################################################################
 #Globals
 urls = {}
-supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE']
+supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot']
 requested_distros = []
 
 #################################################################################################
@@ -67,6 +67,9 @@ def collect_distro_files(requested_distros):
     if 'OpenSUSE' in requested_distros:
         print("Collecting OpenSUSE.")
         urls['OpenSUSE'] = distros.get_opensuse()
+    if 'Parrot' in requested_distros:
+        print("Collecting Parrot.")
+        urls['Parrot'] = distros.get_parrot()
     return urls
 
 def clear_screen():

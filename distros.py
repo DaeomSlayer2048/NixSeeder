@@ -59,6 +59,14 @@ def get_opensuse():
     urls = get_urls(release_urls, torrent_format)
     return urls
 
+def get_parrot():
+    base_url = "https://download.parrotsec.org/parrot/iso/"
+    torrent_format = re.compile("(?:title=\")(.+\.torrent)(?!</a>)")
+    release_format = re.compile("(?:title=\")(\d+\.\d+\.\d+|\d+.\d+|\d+)(?:\")")
+    release_urls = get_releases(base_url, release_format, static_directory)
+    urls = get_urls(release_urls, torrent_format)
+    return urls
+
 ###########################################################################################
 # Distros with un-common non-generic structures
 
