@@ -1,43 +1,67 @@
 import re
 import urllib.request
 
-def parse_ftp(base_url, torrent_format, version_format):
-    #A generic FTP directory parser with torrents stored in folders seperated by version
-    urls = []
-    version_urls = []
+static_directory = '/'
+
+###########################################################################################
+# Generic functions
+
+def get_releases(base_url, release_format, static_directory):
+    release_urls = []
     #Get site
     response = urllib.request.urlopen(base_url).read().decode('utf-8')
-    versions = version_format.findall(response)
-    for version in versions:
-        version_url = base_url + version + '/'
-        version_urls.append(version_url)
+    releases = release_format.findall(response)
+    for release in releases:
+        release_url = base_url + release + static_directory
+        release_urls.append(release_url)
     #Remove dupes
-    version_urls = list(set(version_urls))
-    #Get torrents in version folder
-    for version_url in version_urls:
-        response = urllib.request.urlopen(version_url).read().decode('utf-8')
+    release_urls = list(set(release_urls))
+    return release_urls
+
+def get_urls(release_urls, torrent_format):
+    urls = []
+    #Get torrents in release folder
+    for release_url in release_urls:
+        response = urllib.request.urlopen(release_url).read().decode('utf-8')
         torrents = torrent_format.findall(response)
         for torrent in torrents:
-            url =  version_url + torrent
+            url =  release_url + torrent
             print("Found: %s" % (url.rsplit('/', 1)[-1]))
             urls.append(url)
     return urls
 
+###########################################################################################
+# Distros with generic/common directory structures
 def get_ubuntu():
     base_url = "ftp://releases.ubuntu.com/releases/"
     torrent_format = re.compile("ubuntu-.+\.iso\.torrent")
-    version_format = re.compile("[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+")
-    urls = parse_ftp(base_url, torrent_format, version_format)
+    release_format = re.compile("[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+")
+    release_urls = get_releases(base_url, release_format, static_directory)
+    urls = get_urls(release_urls, torrent_format)
     return urls
 
 def get_arch():
     base_url = "ftp://mirror.rackspace.com/archlinux/iso/"
     torrent_format = re.compile("archlinux-.+\.iso\.torrent")
-    version_format = re.compile("[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+")
-    urls = parse_ftp(base_url, torrent_format, version_format)
+    release_format = re.compile("[0-9]+\.[0-9]+\.[0-9]+|[0-9]+\.[0-9]+")
+    release_urls = get_releases(base_url, release_format, static_directory)
+    urls = get_urls(release_urls, torrent_format)
     return urls
 
+def get_opensuse():
+    static_directory = '/iso/'
+    base_url = "ftp://www.gtlib.gatech.edu/pub/opensuse/distribution/leap/"
+    torrent_format = re.compile("openSUSE\S+\.iso\.torrent")
+    release_format = re.compile("[0-9]\.[0-9]|[0-9]+[0-9]\.[0-9]+")
+    release_urls = get_releases(base_url, release_format, static_directory)
+    urls = get_urls(release_urls, torrent_format)
+    return urls
+
+###########################################################################################
+# Distros with un-common non-generic structures
+
 def get_fedora():
+    #Fedora torrents are all hosted in one top directory
     urls = []
     base_url = "https://torrent.fedoraproject.org/torrents/"
     torrent_format = re.compile("(?:\"\>)(Fedora.+\.torrent)")
@@ -54,41 +78,35 @@ def get_centos():
     urls = []
     base_url = "ftp://mirror.rackspace.com/CentOS/"
     torrent_format = re.compile("CentOS-.+\.torrent")
-    version_format = re.compile("[0-9]\.[0-9]\.[0-9]+|[0-9]\.[0-9]+")
+    release_format = re.compile("[0-9]\.[0-9]\.[0-9]+|[0-9]\.[0-9]+")
     #Main page
     response = urllib.request.urlopen(base_url).read().decode('utf-8')
-    versions = version_format.findall(response)
+    releases = release_format.findall(response)
     #Only the latest is stored on this server
-    latest = max(versions)
-    version_url = base_url + latest + '/isos/x86_64/'
-    response = urllib.request.urlopen(version_url).read().decode('utf-8')
+    latest = max(releases)
+    release_url = base_url + latest + '/isos/x86_64/'
+    response = urllib.request.urlopen(release_url).read().decode('utf-8')
     torrents = torrent_format.findall(response)
     for torrent in torrents:
-        url =  version_url + torrent
+        url =  release_url + torrent
         print("Found: %s" % (torrent))
         urls.append(url)
     return urls
 
-def get_opensuse():
-    urls = []
-    version_urls = []
-    base_url = "ftp://www.gtlib.gatech.edu/pub/opensuse/distribution/leap/"
-    torrent_format = re.compile("openSUSE\S+\.iso\.torrent")
-    version_format = re.compile("[0-9]\.[0-9]|[0-9]+[0-9]\.[0-9]+")
-    #Get site
-    response = urllib.request.urlopen(base_url).read().decode('utf-8')
-    versions = version_format.findall(response)
-    for version in versions:
-        version_url = base_url + version + '/iso/'
-        version_urls.append(version_url)
-    #Remove dupes
-    version_urls = list(set(version_urls))
-    #Get torrents in version folder
-    for version_url in version_urls:
-        response = urllib.request.urlopen(version_url).read().decode('utf-8')
-        torrents = torrent_format.findall(response)
-        for torrent in torrents:
-            url =  version_url + torrent
-            print("Found: %s" % (url.rsplit('/', 1)[-1]))
-            urls.append(url)
+###########################################################################################
+#  Under construction
+def get_debian():
+    #COMBAK
+    base_url = "ftp://cdimage.debian.org/cdimage/release/"
+    release_format = re.compile("[0-9]\.[0-9]\.[0-9]\-live|[0-9]\.[0-9]\.[0-9]")
+    arch_format = re.compile("(?!\s)[aimps][mr3iup]\w+-arch|(?:\s)[aimps][mr3iup]\w+")
+    release_urls = get_releases(base_url, release_format, static_directory)
+    static_directory = "/bt-hybrid/"
+    #Get Release
+    for release_url in release_urls:
+        response = urllib.request.urlopen(release_url).read().decode('utf-8')
+        archs = arch_format.findall(response)
+        for arch in archs:
+            url = static_directory + arch + static_directory
+            torrents = torrent_format.findall(response)
     return urls
