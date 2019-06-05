@@ -20,7 +20,7 @@ This script is Alpha at best currently, and is fairly intuitive, you can't break
 - [ ] Linux Mint
 - [ ] [MX](https://mxlinux.org/)
 - [x] [Qubes](https://www.qubes-os.org/)
-- [ ] [GhostBSD](https://ghostbsd.org/)
+- [x] [GhostBSD](https://ghostbsd.org/)
 
 ### Special Thanks:
 To the following repo [BASH](https://github.com/ppaskowsky/Bash) for giving me the idea to build this script!

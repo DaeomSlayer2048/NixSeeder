@@ -87,6 +87,15 @@ def get_xubuntu():
     urls = list(set(urls))
     return urls
 
+def get_ghostbsd():
+    #All files are on one page
+    base_url = "https://ghostbsd.org/download"
+    torrent_format = re.compile("https://.+?\.torrent")
+    response = get_url(base_url)
+    urls = torrent_format.findall(response)
+    urls = list(set(urls))
+    return urls
+
 def get_qubes():
     #All files are on one page
     base_url = "https://www.qubes-os.org/downloads/"
@@ -95,6 +104,7 @@ def get_qubes():
     urls = torrent_format.findall(response)
     urls = list(set(urls))
     return urls
+
 ###########################################################################################
 # Distros with un-common / non-generic structures
 
