@@ -7,7 +7,7 @@ import urllib.request
 #################################################################################################
 #Globals
 urls = {}
-supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu', 'Qubes', 'GhostBSD']
+supported_distros = ['All', 'Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu', 'Qubes', 'GhostBSD']
 requested_distros = []
 
 #################################################################################################
@@ -40,11 +40,10 @@ def distro_selection_menu(supported_distros):
             print("%s: %s" % (str(i), supported_distros[i]))
             i += 1
         print("-1: Exit")
-        print("-2: All")
         user_selection = int(input("Selection: "))
         if user_selection == -1:
             break
-        elif user_selection == -2:
+        elif user_selection == 0:
             requested_distros = supported_distros
             break
         requested_distros.append(supported_distros[user_selection])

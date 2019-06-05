@@ -85,6 +85,8 @@ def get_xubuntu():
     response = get_url(base_url)
     urls = torrent_format.findall(response)
     urls = list(set(urls))
+    for url in urls:
+        print("Found: %s" % (url.rsplit('/', 1)[-1]))
     return urls
 
 def get_ghostbsd():
@@ -94,6 +96,8 @@ def get_ghostbsd():
     response = get_url(base_url)
     urls = torrent_format.findall(response)
     urls = list(set(urls))
+    for url in urls:
+        print("Found: %s" % (url.rsplit('/', 1)[-1]))
     return urls
 
 def get_qubes():
@@ -103,6 +107,8 @@ def get_qubes():
     response = get_url(base_url)
     urls = torrent_format.findall(response)
     urls = list(set(urls))
+    for url in urls:
+        print("Found: %s" % (url.rsplit('/', 1)[-1]))
     return urls
 
 ###########################################################################################
