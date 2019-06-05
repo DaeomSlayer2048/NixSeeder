@@ -78,6 +78,15 @@ def get_parrot():
 ###########################################################################################
 # Distros with un-common non-generic structures
 
+def get_xubuntu():
+    #All files are on one page
+    base_url = "https://xubuntu.org/download/"
+    torrent_format = re.compile("http://torrent.+?\.iso\.torrent")
+    response = get_url(base_url)
+    urls = torrent_format.findall(response)
+    urls = list(set(urls))
+    return urls
+
 def get_fedora():
     #Fedora torrents are all hosted in one top directory
     urls = []

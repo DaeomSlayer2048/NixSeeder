@@ -7,7 +7,7 @@ import urllib.request
 #################################################################################################
 #Globals
 urls = {}
-supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot']
+supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu']
 requested_distros = []
 
 #################################################################################################
@@ -21,8 +21,8 @@ def get_torrents(distros, directory):
                 try:
                     urllib.request.urlretrieve(url, filename)
                 except urllib.error.URLError as e:
-                    print("Error retrieveing %s " % (str(url)))
-                    print(e.reason)
+                    tqdm.write("Error retrieveing %s " % (str(url)))
+                    tqdm.write(e.reason)
 
 #################################################################################################
 # Menu system
@@ -70,6 +70,9 @@ def collect_distro_files(requested_distros):
     if 'Parrot' in requested_distros:
         print("Collecting Parrot.")
         urls['Parrot'] = distros.get_parrot()
+    if 'Xubuntu' in requested_distros:
+        print("Collecting Xubuntu.")
+        urls['xubuntu'] = distros.get_xubuntu()
     return urls
 
 def clear_screen():
@@ -85,9 +88,6 @@ parser = argparse.ArgumentParser(
     description='''
     A simple script to pull in torrernt files of our favorite Linux distros.
     Files are not re-downloaded if they already exist.
-    ''',
-    epilog='''
-    TODO: Take config file
     '''
 )
 
