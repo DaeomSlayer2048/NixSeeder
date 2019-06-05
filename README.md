@@ -18,8 +18,8 @@ This script is Alpha at best currently, and is fairly intuitive, you can't break
 - [ ] Debian
 - [ ] Elementary
 - [ ] Linux Mint
-- [ ] MX
-- [ ] [Qubes](https://www.qubes-os.org/)
+- [ ] [MX](https://mxlinux.org/)
+- [x] [Qubes](https://www.qubes-os.org/)
 - [ ] [GhostBSD](https://ghostbsd.org/)
 
 ### Special Thanks:

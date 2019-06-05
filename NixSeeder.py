@@ -7,7 +7,7 @@ import urllib.request
 #################################################################################################
 #Globals
 urls = {}
-supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu']
+supported_distros = ['Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu', 'Qubes']
 requested_distros = []
 
 #################################################################################################
@@ -73,6 +73,9 @@ def collect_distro_files(requested_distros):
     if 'Xubuntu' in requested_distros:
         print("Collecting Xubuntu.")
         urls['xubuntu'] = distros.get_xubuntu()
+    if 'Qubes' in requested_distros:
+        print("Collecting Qubes.")
+        urls['qubes'] = distros.get_qubes()
     return urls
 
 def clear_screen():
