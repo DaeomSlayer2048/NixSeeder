@@ -22,6 +22,13 @@ This script is Alpha at best currently, and is fairly intuitive, you can't break
 - [x] [Qubes](https://www.qubes-os.org/)
 - [x] [GhostBSD](https://ghostbsd.org/)
 
+## Install
+### CentOS
+yum install centos-release-scl
+yum install rh-python36
+yum install python36-pip
+pip3 install tqdm
+
 ### Special Thanks:
 To the following repo [BASH](https://github.com/ppaskowsky/Bash) for giving me the idea to build this script!
 
