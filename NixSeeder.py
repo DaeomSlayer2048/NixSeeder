@@ -7,7 +7,7 @@ import urllib.request
 #################################################################################################
 #Globals
 urls = {}
-supported_distros = ['All', 'Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu', 'Qubes', 'GhostBSD']
+supported_distros = ['All', 'Ubuntu', 'Arch', 'Fedora', 'CentOS', 'OpenSUSE', 'Parrot', 'Xubuntu', 'Qubes', 'GhostBSD', 'Gallium']
 requested_distros = []
 
 #################################################################################################
@@ -78,6 +78,9 @@ def collect_distro_files(requested_distros):
     if 'GhostBSD' in requested_distros:
         print("Collecting GhostBSD.")
         urls['ghostbsd'] = distros.get_ghostbsd()
+    if 'Gallium' in requested_distros:
+        print("Collecting Gallium.")
+        urls['Gallium'] = distros.get_gallium()
     return urls
 
 def clear_screen():

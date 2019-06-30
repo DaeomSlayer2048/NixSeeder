@@ -36,8 +36,8 @@ def get_urls(release_urls, torrent_format):
             url =  release_url + torrent
             print("Found: %s" % (url.rsplit('/', 1)[-1]))
             urls.append(url)
-        #Remove dupes
-        urls = list(set(urls))
+    #Remove dupes
+    urls = list(set(urls))
     return urls
 
 ###########################################################################################
@@ -71,6 +71,16 @@ def get_parrot():
     base_url = "https://download.parrotsec.org/parrot/iso/"
     torrent_format = re.compile("(?:title=\")(.+\.torrent)(?!</a>)")
     release_format = re.compile("(?:title=\")(\d+\.\d+\.\d+|\d+.\d+|\d+)(?:\")")
+    release_urls = get_releases(base_url, release_format, static_directory)
+    urls = get_urls(release_urls, torrent_format)
+    return urls
+
+def get_gallium():
+    urls = []
+    static_directory = '/TORRENTS/'
+    base_url = "https://galliumos.org/releases/"
+    torrent_format = re.compile("galliumos.+?\.iso\.torrent")
+    release_format = re.compile("[0-9]\.[0-9]\.[0-9]+|[0-9]\.[0-9]+")
     release_urls = get_releases(base_url, release_format, static_directory)
     urls = get_urls(release_urls, torrent_format)
     return urls
